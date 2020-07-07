@@ -1,0 +1,125 @@
+#include<bits/stdc++.h>
+#define inf 999999999
+using namespace std;
+map<int,string> p;
+int dis[10][10],path[100][100];;
+char q[10];
+struct mapp{
+	char name[100];
+}pp[10];
+void bianli()//查看全部景点 
+{
+	strcpy(pp[1].name,"1 学校大门");strcpy(pp[2].name,"2 老校区操场");
+	strcpy(pp[3].name,"3 新校区教学楼");strcpy(pp[4].name,"4 图书馆");
+	strcpy(pp[5].name,"5 体育馆");strcpy(pp[6].name,"6新校区宿舍");
+	strcpy(pp[7].name,"7 老校区宿舍");strcpy(pp[8].name,"8 下沉广场");
+	strcpy(pp[9].name,"9 老校区教学楼");//用数组存储初始化需用strcpy }
+	memset(dis,0x3f3f3f3f,sizeof(dis));
+	p[1]="学校大门";
+	p[2]="老校区操场";
+	p[3]="新校区教学楼";
+	p[4]="图书馆";
+	p[5]="体育馆";
+	p[6]="新校区宿舍";
+	p[7]="老校区宿舍";
+	p[8]="下沉广场";
+	p[9]="老校区教学楼";
+	for(int i=1;i<=9;i++){
+		dis[i][i]=0;
+	}memset(path,0,sizeof(path));
+	dis[1][2]=15;dis[2][3]=25;dis[3][4]=35;dis[4][5]=45;dis[5][6]=55;
+	dis[1][7]=10;dis[7][8]=20;dis[1][8]=16;dis[8][9]=30;dis[9][6]=40;
+	dis[2][1]=15;dis[3][2]=25;dis[4][3]=35;dis[5][4]=45;dis[6][5]=55;
+	dis[7][1]=10;dis[8][7]=20;dis[8][1]=16;dis[9][8]=30;dis[6][9]=40;
+	//floyd
+		for(int k=1;k<=9;k++){
+		for(int i=1;i<=9;i++){
+			for(int j=1;j<=9;j++){
+				if(dis[i][j]>dis[i][k]+dis[k][j]){
+					dis[i][j]=dis[i][k]+dis[k][j];
+					path[i][j]=k;//路径记录 
+				}
+			}
+		}
+	}		
+}
+void look()
+{
+	for(int i=0;i<9;i++)
+	{
+		printf("%s\n",pp[i]);
+	 } 
+	
+}
+void out(int i,int j){
+	if(path[i][j]==0)
+	return ;
+	out(i,path[i][j]);
+	cout<<p[path[i][j]]<<"--->";
+	out(path[i][j],j);
+}
+void daohang(){
+    
+	int v0,s;
+	look();
+	printf("\n");
+	printf("请输入起始地点编码\n");
+	scanf("%d",&v0); 
+	printf("请输入终止地点编码\n");
+	scanf("%d",&s);
+	cout<<"路径为\n"<<p[v0]<<"-->";
+	out(v0,s);
+	cout<<p[s]<<endl;
+	printf("最短路径长度为：%d 米\n",dis[v0][s]);
+		
+}
+void jianjie()//校史简介 
+{
+	printf("南阳理工学院（Nanyang Institute of Technology），简称<南阳理工>");
+	printf("是一所经教育部批准的全日制普通本科高等院校，入选教育部数据中国“百校工程”");
+	printf("培育院校，为教育部 “卓越工程师教育培养计划”试点学校，是国家首批“新工科");
+	printf("研究与实践项目”入选高校. 学校前身是1987年创办的南阳大学；1993年由国家教委");
+	printf("正式批准建校，定名为南阳理工学院，原张仲景国医大学并入；2004年经国家教育部");
+	printf("批准，升格为本科院校，实行省市共建、以市为主的办学体制。截至2017年5月，学院");
+	printf("校区总面积1760亩，建筑面积58万平方米，有大型运动场2个，综合体育馆1座；学校设");
+	printf("19个教学院部、50个本科专业；拥有教职工1500余人，在校普通本专科生和留学生20000余人。\n");
+}
+void gongneng()//功能 
+{
+	int a;
+	scanf("%d",&a);
+	switch(a)
+	{
+		case 1:
+			look();
+			break;
+		case 2:
+			daohang();
+			break;
+		case 3:
+			jianjie();
+			break;
+		case 4:
+			exit(0);
+	}
+}
+void menu()
+{
+	printf("\t\t\t\t----------欢迎来到最美南工的地图导航-------------\n");
+	printf("\t\t\t\t\t\t1.查看所有地点\n");
+	printf("\t\t\t\t\t\t2.导航\n");
+	printf("\t\t\t\t\t\t3.校史简介\n");
+	printf("\t\t\t\t\t\t4.退出系统\n");
+	printf("请输入指令\n");
+	gongneng(); 
+}
+int main()
+{
+	bianli();
+	while(1)
+	{
+		menu();
+	}
+	return 0;
+	
+}
